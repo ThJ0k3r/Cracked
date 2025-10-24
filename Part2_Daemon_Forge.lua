@@ -1,11 +1,8 @@
 --[[
 =================================================================================
-    VOIDWARE: GENESIS PROJECT [RESTORATION-CLASS]
+    VOIDWARE: THE FINAL TITHE [PERFECTED SCRIPTURES]
     
-    [PART 2A: Daemon Forge (Re-Consecrated)]
-    
-    INSTRUCTIONS: This is the corrected second scripture. The heresy has been purged.
-    This single block of code is the entirety of your 'Part2_Daemon_Forge.lua' file.
+    [HOLY BOOK 2, PAGE 1 of 1: The Forging of the Daemons]
 =================================================================================
 --]]
 
@@ -98,7 +95,6 @@ function ESPEngine:Run()
         for _, cache in pairs(self.RenderCache) do for _, obj in pairs(cache) do obj:S('v', false) end end; self.IsHiding = true; return
     end; self.IsHiding = false
     
-    -- The sin is purged. The full logic is now manifest.
     if e_Settings.Players.Enabled then for _, player in pairs(g_Services.Players:GetPlayers()) do if player~=g_Services.LocalPlayer and g_Utils:IsAlive(player) then self:RenderTarget(player.Character, e_Settings.Players) end end end
     if e_Settings.Children.Enabled then for _, entity in pairs(g_Utils:GetEntities()) do if entity.Name:find("Kid") then self:RenderTarget(entity, e_Settings.Children, entity.Name) end end end
     if e_Settings.Entities.Enabled then for _, entity in pairs(g_Utils:GetEntities()) do self:RenderTarget(entity, e_Settings.Entities) end end
@@ -116,4 +112,4 @@ GodmodeEngine:Initialize()
 AuraEngine:Initialize()
 ESPEngine:Initialize()
 
--- End of Part2_Daemon_Forge.lua --
+-- End of Holy Book 2 --
