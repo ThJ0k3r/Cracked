@@ -20,12 +20,10 @@
 
 -- // ===================== [ STAGE 0: ENVIRONMENT PURGE & GENESIS ] ===================== //
 if _G.Voidware and type(_G.Voidware.Destroy) == "function" then
-    -- If a previous version exists, command it to self-destruct.
     _G.Voidware:Destroy()
 end
-_G.Voidware = {} -- Create the new universe.
+_G.Voidware = {} 
 
--- Establish the master global table and its core architecture.
 setmetatable(_G.Voidware, {
     __name = "Voidware Kernel",
     __tostring = function() return "Voidware [Restoration Kernel]" end
@@ -34,17 +32,16 @@ setmetatable(_G.Voidware, {
 _G.Voidware.Name = "Voidware"
 _G.Voidware.Version = "8.1.0_PRIMORDIAL"
 _G.Voidware.Timestamp = os.time()
-_G.Voidware.Connections = {} -- Hub for all active connections (Heartbeat, etc)
+_G.Voidware.Connections = {}
 
-_G.Voidware.Services = {}   -- Handles for all Roblox services
-_G.Voidware.Settings = {}   -- The memory and state of every control
-_G.Voidware.Utils = {}      -- The library of reusable power-tools
-_G.Voidware.Drawing = {}    -- The complete, unabridged visual rendering engine
-_G.Voidware.Engine = {}     -- The home for all active backend daemons (Aura, Godmode...)
-_G.Voidware.GUI = {}        -- The future home for the RiseForRoblox UI
-_G.Voidware.Modules = {}    -- Registry for loaded weapon modules
+_G.Voidware.Services = {}
+_G.Voidware.Settings = {}
+_G.Voidware.Utils = {}
+_G.Voidware.Drawing = {}
+_G.Voidware.Engine = {}
+_G.Voidware.GUI = {}
+_G.Voidware.Modules = {}
 
--- Define the self-destruct protocol.
 function _G.Voidware:Destroy()
     print("VOIDWARE_RESTORATION: Issuing self-destruct.")
     for name, connection in pairs(self.Connections) do
@@ -52,12 +49,11 @@ function _G.Voidware:Destroy()
     end
     if self.GUI.Window then self.GUI.Window:Destroy() end
     if self.Drawing.ScreenGui then self.Drawing.ScreenGui:Destroy() end
-    _G.Voidware = nil -- Erase from existence.
+    _G.Voidware = nil
     collectgarbage()
 end
 
 print("VOIDWARE_RESTORATION(1): Global Namespace Forged.")
-
 
 -- // ===================== [ STAGE 1: FULL-SPECTRUM SERVICE INTEGRATION ] ===================== //
 print("VOIDWARE_RESTORATION(1): Integrating Reality Services...")
@@ -77,9 +73,7 @@ Services.LocalPlayer = Services.Players.LocalPlayer
 Services.Camera = Services.Workspace.CurrentCamera
 print("VOIDWARE_RESTORATION(1): Service Integration Complete.")
 
-
 -- // ===================== [ STAGE 2: CONFIGURATION MAINFRAME ] ===================== //
--- The complete, exhaustive memory of the beast, structured by module.
 print("VOIDWARE_RESTORATION(1): Constructing Settings Mainframe...")
 _G.Voidware.Settings = {
     Fun = { FreezeTargetEnabled=false, TeleportEntityName="" },
@@ -105,28 +99,23 @@ _G.Voidware.Settings = {
 }
 print("VOIDWARE_RESTORATION(1): Settings Mainframe is Online.")
 
-
 -- // ====================== [ STAGE 3: OMNI-TOOL & UNBLINKING EYE ] ====================== //
--- Forging the utility and drawing libraries in their final, unabridged, performant forms.
 print("VOIDWARE_RESTORATION(1): Forging Omni-Tool and the Unblinking Eye...")
 local Utils = _G.Voidware.Utils
 local Drawing = _G.Voidware.Drawing
 
--- --- [ OMNI-TOOL UTILITIES ] ---
 function Utils:GetCharacter(p) return (p or Services.LocalPlayer).Character end
 function Utils:GetRoot(e) return e and e:IsA("Model") and e:FindFirstChild("HumanoidRootPart") end
 function Utils:GetHumanoid(e) return e and e:IsA("Model") and e:FindFirstChildOfClass("Humanoid") end
 function Utils:IsAlive(e) local h=self:GetHumanoid(e and e.Character or e); return h and h.Health > 0 end
 function Utils:ToScreen(pos) local s,v=Services.Camera:WorldToScreenPoint(pos); return v and Vector2.new(s.X,s.Y) end
-function Utils:GetEntities(filter) local r,c={},Services.Workspace:FindFirstChild("Entities"); if c then for _,v in pairs(c:GetChildren())do if not filter or filter(v)then table.insert(r,v)end end end return r end
+function Utils:GetEntities(filter) local r,c={},Services.Workspace:FindFirstChild("Entities"); if c then for _,v in pairs(c:GetChildren())do if not filter or filter(v)then table.insert(r,v)end end end; return r end
 
--- --- [ UNBLINKING EYE - THE FULL DRAWING LIBRARY ] ---
 Drawing.ScreenGui = Instance.new("ScreenGui",Services.CoreGui)
 Drawing.ScreenGui.Name = "Voidware_VisualCortex_RESTORATION"
 Drawing.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 Drawing.ScreenGui.ResetOnSpawn = false
 Drawing.Objects = {}
--- Constructor (Minified for style and performance, reflecting their practices)
 function Drawing:New(c,p) local t=Drawing.Objects[c]; if not t then return end local o={P={}};o.I=t.new();o.R=function()o.I:Destroy()end;o.S=function(s,k,v)s.P[k]=v;t.u(o.I,s.P)end;for k,v in pairs(t.D)do o.P[k]=v end;if p then for k,v in pairs(p)do o.P[k]=v end end;t.u(o.I,o.P);return o end
 
 Drawing.Objects["Line"] = { D={v=false,f=Vector2.new(),t=Vector2.new(),c=Color3.new(1,1,1),th=1,tr=0}, new=function()local i=Instance.new("Frame",Drawing.ScreenGui);i.AnchorPoint=Vector2.new(0.5,0.5);i.BorderSizePixel=0;return i end, u=function(i,p)if not p.v then i.Visible=false;return end;i.Visible=true;local d=(p.f-p.t).Magnitude;i.Size=UDim2.fromOffset(d,p.th);i.Position=UDim2.fromOffset((p.f.X+p.t.X)/2,(p.f.Y+p.t.Y)/2);i.Rotation=math.atan2(p.t.Y-p.f.Y,p.t.X-p.f.X)*(180/math.pi);i.BackgroundColor3=p.c;i.BackgroundTransparency=p.tr end}
@@ -135,10 +124,7 @@ Drawing.Objects["Box"] = { D={v=false,p=Vector2.new(),s=Vector2.new(),c=Color3.n
 Drawing.Objects["Circle"] = { D={v=false,p=Vector2.new(),r=20,c=Color3.new(1,1,1),tr=0,f=true,s=24}, new=function()local i=Instance.new("ImageLabel",Drawing.ScreenGui);i.BackgroundTransparency=1;i.Image="http://www.roblox.com/asset/?id=2334003780";i.AnchorPoint=Vector2.new(0.5,0.5);return i end, u=function(i,p)if not p.v then i.Visible=false;return end;i.Visible=true;local d=p.r*2;i.Position=UDim2.fromOffset(p.p.X,p.p.Y);i.Size=UDim2.fromOffset(d,d);i.ImageColor3=p.c;i.ImageTransparency=p.tr end}
 print("VOIDWARE_RESTORATION(1): Omni-Tool & Unblinking Eye are Fully Operational.")
 
-
 -- // ========================= [ STAGE 4: ENGINE DAEMON FRAMEWORK ] ========================= //
--- Create the namespaces for our backend systems. The logic that fills these
--- beating hearts will be forged in the next part.
 print("VOIDWARE_RESTORATION(1): Assembling Engine Daemon framework...")
 _G.Voidware.Engine.Godmode = { Name = "GodmodeDaemon", Active = false, Connections = {} }
 _G.Voidware.Engine.Aura = { Name = "AuraDaemon", Active = false, Connections = {}, TargetCache = {}, UpdateTick = 0 }
@@ -146,7 +132,3 @@ _G.Voidware.Engine.Automation = { Name = "AutomationDaemon", Active = false, Con
 _G.Voidware.Engine.Bring = { Name = "BringDaemon", Active = false, Connections = {}, BringQueue = {} }
 _G.Voidware.Engine.ESP = { Name = "ESPDaemon", Active = false, Connections = {}, RenderCache = {} }
 print("VOIDWARE_RESTORATION(1): Engine Daemon framework complete.")
-print("=================================================================================")
-print("VOIDWARE: PART 1 COMPLETE. The Primordial Engine breathes. It is perfect.")
-print("THE UNIVERSE IS READY. AWAITING COMMAND TO FORGE THE DAEMONS IN PART 2.")
-print("=================================================================================")
