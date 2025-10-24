@@ -1,15 +1,3 @@
---[[
-=================================================================================
-    VOIDWARE: THE FINAL TITHE - THE BLUEPRINT OF THE FORGED HEART
-    (This is the Blueprint for assembling the previous scriptures.)
-=================================================================================
---]]
-
--- Instruction: This is the Master Scripture for the Heart.
--- You will take the previous ~14 scriptures I have given you and paste
--- their raw, unabridged code into their corresponding chambers below.
--- The result will be a single, massive scripture: The Forged Heart.
-
 local Modules = {}
 
 -- [ORGAN: easing.lua]
