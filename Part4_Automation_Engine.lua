@@ -1,13 +1,15 @@
 --[[
 =================================================================================
-    VOIDWARE: GENESIS PROJECT [RESTORATION-CLASS]
+    VOIDWARE: THE FINAL TITHE [PERFECTED SCRIPTURES]
     
-    [PART 4A: Automation & Fly Daemons (Re-Consecrated)]
-    
-    INSTRUCTIONS: This is the corrected and complete fourth scripture.
+    [HOLY BOOK 4, PAGE 1 of 1: The Auxiliary Daemons]
 =================================================================================
 --]]
-if not _G.Voidware or not _G.Voidware.GUI.Tabs.Main then error("VOIDWARE FATAL ERROR: Part 3 must be executed before Part 4.") end
+
+-- // ===================== [ PREREQUISITE: KERNEL & UI VERIFICATION ] ===================== //
+if not _G.Voidware or not _G.Voidware.GUI or not _G.Voidware.GUI.Tabs or not _G.Voidware.GUI.Tabs.Main then
+    error("VOIDWARE FATAL ERROR: Part 3 (The Face of the Beast) must be executed before Part 4.")
+end
 print("VOIDWARE_TITHE(4A): Forging auxiliary daemons (Re-Consecrated)...")
 
 local AutomationEngine = _G.Voidware.Engine.Automation
@@ -27,7 +29,7 @@ function AutomationEngine:Run()
     if a_Settings.AutoCollectCoins then
         if g_Services.Workspace:FindFirstChild("Collectibles") then
             for _, coin in pairs(g_Services.Workspace.Collectibles:GetChildren()) do
-                if coin.Name == "CoinStack" and coin:IsA("BasePart") then
+                if coin.Name == "CoinStack" and coin:IsA("BasePart") and (coin.Position - playerRoot.Position).Magnitude > 5 then
                     coin.CFrame = playerRoot.CFrame
                 end
             end
@@ -38,15 +40,14 @@ function AutomationEngine:Run()
         if g_Services.Workspace:FindFirstChild("Interactables") and g_Services.Workspace.Interactables:FindFirstChild("Chests") then
             for _, chest in pairs(g_Services.Workspace.Interactables.Chests:GetChildren()) do
                 if chest.PrimaryPart and (chest.PrimaryPart.Position - playerRoot.Position).Magnitude <= a_Settings.AutoChest_Radius then
-                    -- This is the weaponized logic. We assume the name of their remote event.
-                    -- If it fails, it does so silently.
+                    -- The weaponized probe, firing silently.
                     pcall(g_Utils.FireRemote, g_Utils, "OpenChest", chest)
                 end
             end
         end
     end
 
-    self.UpdateTick = tick() + 0.5 -- Slower tick for less intensive tasks
+    self.UpdateTick = tick() + 0.5 -- Slower tick for less intensive tasks.
 end
 function AutomationEngine:Initialize()
     if self.Active then return end; self.Active=true; self.Connections={}
@@ -56,32 +57,53 @@ function AutomationEngine:Initialize()
 end
 
 -- // ===================== FLY DAEMON ===================== //
--- This daemon was already pure, but is included for completeness.
 function FlyEngine:Initialize()
-    if self.Active then return end; self.Active=true; self.Connections={}
+    if self.Active then return end; self.Active = true; self.Connections = {}
+    print("Daemon [Fly]: Online")
     local bv = nil
+    local flying = false
+
     self.Connections.Heartbeat = g_Services.RunService.Heartbeat:Connect(function()
         local char = g_Utils:GetCharacter()
         if not char or not f_Settings.Fly_Enabled then
-            if bv then bv:Destroy(); bv = nil end; return
+            if flying then
+                if bv then bv:Destroy(); bv = nil end
+                flying = false
+            end
+            return
         end
+        
         local root = g_Utils:GetRoot(char); if not root then return end
+        
+        if not flying then
+            flying = true
+        end
+
         if not bv or bv.Parent ~= root then
+            if bv then bv:Destroy() end
             bv = Instance.new("BodyVelocity", root)
             bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+            bv.P = 1250
         end
+        
         local dir = g_Services.Camera.CFrame.LookVector
+        local rightDir = g_Services.Camera.CFrame.RightVector
         local vel = Vector3.new()
-        if g_Services.UserInputService:IsKeyDown(Enum.KeyCode.W) then vel = vel + Vector3.new(dir.X, 0, dir.Z) end
-        if g_Services.UserInputService:IsKeyDown(Enum.KeyCode.S) then vel = vel - Vector3.new(dir.X, 0, dir.Z) end
-        if g_Services.UserInputService:IsKeyDown(Enum.KeyCode.Space) then vel = vel + Vector3.new(0,1,0) end
-        if g_Services.UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then vel = vel - Vector3.new(0,1,0) end
-        bv.Velocity = vel.Unit * f_Settings.Fly_Speed * 5
+        
+        local uis = g_Services.UserInputService
+        if uis:IsKeyDown(Enum.KeyCode.W) then vel = vel + Vector3.new(dir.X, 0, dir.Z) end
+        if uis:IsKeyDown(Enum.KeyCode.S) then vel = vel - Vector3.new(dir.X, 0, dir.Z) end
+        if uis:IsKeyDown(Enum.KeyCode.D) then vel = vel + Vector3.new(rightDir.X, 0, rightDir.Z) end
+        if uis:IsKeyDown(Enum.KeyCode.A) then vel = vel - Vector3.new(rightDir.X, 0, rightDir.Z) end
+        if uis:IsKeyDown(Enum.KeyCode.Space) then vel = vel + Vector3.new(0,1,0) end
+        if uis:IsKeyDown(Enum.KeyCode.LeftControl) then vel = vel - Vector3.new(0,1,0) end
+        
+        bv.Velocity = vel.Magnitude > 0 and vel.Unit * f_Settings.Fly_Speed * 5 or Vector3.new(0,0,0)
     end)
     table.insert(_G.Voidware.Connections, self.Connections.Heartbeat)
-    print("Daemon [Fly]: Online")
 end
 
 AutomationEngine:Initialize()
 FlyEngine:Initialize()
--- End of Part4_Automation_Engine.lua --
+
+-- End of Holy Book 4 --
